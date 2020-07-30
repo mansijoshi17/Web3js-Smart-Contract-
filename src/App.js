@@ -18,12 +18,12 @@ function App() {
   const [getname, setgetname] = useState("");
   const [getage, setgetage] = useState(0);
 
-  const [ account, setaccount] = useState(null);
+  const [account, setaccount] = useState(null);
 
   const web3 = new Web3(Web3.currentProvider || "http://127.0.0.1:8545")
- web3.eth.getAccounts().then((result) => {
-     setaccount(result[0]);
- })
+  web3.eth.getAccounts().then((result) => {
+    setaccount(result[0]);
+  })
 
 
   var coursetroContract = new web3.eth.Contract([
@@ -75,18 +75,16 @@ function App() {
 
   useEffect(() => {
     coursetroContract.methods.getInstructor().call().then((result) => {
-        setgetname(result[0]);
-        setgetage(result[1]);
-        console.log(result);
+      setgetname(result[0]);
+      setgetage(result[1]);
+      console.log(result);
     })
   })
 
 
 
   const setInstructor = () => {
-
-    coursetroContract.methods.setInstructor(state.name, state.age).send({from:account});
-   
+    coursetroContract.methods.setInstructor(state.name, state.age).send({ from: account });
   }
 
 
@@ -97,16 +95,18 @@ function App() {
     <div className="App">
       <div class="container">
         <h2>Ethereum Blockchain</h2>
-        <div class="form-group">
-          <label for="email">Name:</label>
-          <input placeholder="Enter name" name="name" onChange={(event) => onchange(event)} value={state.name} />
-        </div>
-        <div class="form-group">
-          <label for="pwd">Age:</label>
-          <input placeholder="Enter age" name="age" onChange={(event) => onchange(event)} value={state.age} />
-        </div>
-        <button type="submit" class="btn btn-primary" onClick={() => setInstructor()}>Update Data</button>
+        <form>
+          <div class="form-group">
+            <label for="email">Name:</label>
+            <input placeholder="Enter name" name="name" onChange={(event) => onchange(event)} value={state.name} />
+          </div>
+          <div class="form-group">
+            <label for="pwd">Age:</label>
+            <input placeholder="Enter age" name="age" onChange={(event) => onchange(event)} value={state.age} />
+          </div>
+          <button type="submit" class="btn btn-primary" onClick={() => setInstructor()}>Update Data</button>
 
+        </form>
         <div>{getname + ' ' + 'is' + ' ' + getage + ' ' + 'years old'}</div>
       </div>
     </div>
