@@ -1,0 +1,41 @@
+pragma solidity >=0.4.22 <0.7.0;
+
+/** 
+ * @title Ballot
+ * @dev Implements voting process along with vote delegation
+ */
+contract Course{
+    
+    
+    string  fname ;
+    uint  age ;
+    address owner;
+    
+    function Coursetro() public {     // Add this constructor
+        owner = msg.sender;
+    }
+    
+    
+   modifier onlyOwner {
+        require(msg.sender == owner);
+        _; // when above statement is true then and only it will execute further code.
+    }
+    
+    event Instructor(
+        string name,
+        uint age
+    );
+    
+    
+    function setInstructor(string _fname, uint  _age) onlyOwner public {
+        fname = _fname;
+        age = _age;
+      emit Instructor(_fname, _age);
+    }
+    
+    
+    function getInstructor() public view returns (string , uint ){
+        return (fname, age);
+    } 
+    
+}
