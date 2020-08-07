@@ -103,7 +103,7 @@ function App() {
       "name": "Instructor",
       "type": "event"
     }
-  ], "0x45f2BC0fccF0CA53D64dC3A37ba5612586033061");  //This both value you will get from your IDE.
+  ], "0xB7f7F52F85b04C9d4DFbDc89D37B434ed8d880dC");  //This both value you will get from your IDE.
 
 
 
@@ -121,12 +121,17 @@ function App() {
     .then(function (events) {
       setLoading(false);
       // console.log(events);
-      var getname = events[events.length - 1].returnValues['name'];
-      var getage = events[events.length - 1].returnValues['age']
-      setgetname(getname);
-      setgetage(getage);
+      if (events.length == 0) {
+        setgetname("null");
+        setgetage(null);
+      }
+      else {
+        var getname = events[events.length - 1].returnValues['name'];
+        var getage = events[events.length - 1].returnValues['age']
+        setgetname(getname);
+        setgetage(getage);
+      }
     }); //This will get all the events which get called. I get the last one (updated one) and then get returnvalues of that event.
-
 
 
 
@@ -136,12 +141,16 @@ function App() {
     //   setgetage(result[1]);
     // })   //This is get method need to use call().
   })
+ 
 
 
+
+//Before run this, In IDE first set owner = ms.sender(click on Coursetro btn to set owner) then setInstructor.
 
   const setInstructor = () => {
     coursetroContract.methods.setInstructor(state.name, state.age).send({ from: account }, (err, res) => {
       setLoading(true);
+      
       if (err) {
         setLoading(false);
         console.log('Not allowed except owner');

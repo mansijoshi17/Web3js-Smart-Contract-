@@ -1,0 +1,84 @@
+pragma solidity >=0.4.22 <0.7.0;
+
+
+contract Owned{
+    
+    
+    address owner;
+    
+    
+    function Owned() public{
+        owner = msg.sender;
+    }
+    
+    
+    modifier onlyOwner{
+        require(msg.sender == owner);
+        _;
+    }
+    
+}
+
+
+
+
+contract Courses is Owned{
+    
+    
+    struct Instructor {
+         
+         uint age;
+         bytes fName;
+         bytes lName;
+         
+    }
+    
+    
+    mapping( address => Instructor) instructors;
+    
+    event InstructorInfo(
+        
+        uint age,
+        bytes fName,
+        bytes lName
+        
+        );
+        
+        
+    
+    address[] public instructorAccts;
+    
+    
+    function setInstructor(address _address, uint _age, bytes _fName, bytes _lName) onlyOwner public {
+        
+        Instructor storage  instructor = instructors[_address];
+        
+        
+        instructor.age = _age;
+        instructor.fName = _fName;
+        instructor.lName = _lName;
+        
+        instructorAccts.push(_address) -1;
+     emit   InstructorInfo(_age, _fName, _lName);
+        
+    }
+    
+    
+    function getInstructors() view public returns(address[]){
+        
+        return instructorAccts;//Array of address
+        
+    }
+    
+       
+    function getInstructor(address _address) view public returns(uint, bytes, bytes){
+        
+        return (instructors[_address].age,instructors[_address].fName,instructors[_address].lName);
+        
+    }
+
+    
+    function countInstructors() view public returns(uint){
+        return instructorAccts.length ;
+    }
+}
